@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
+import static org.mockito.ArgumentMatchers.any;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -16,6 +18,7 @@ import com.ibm.adro.learningspringboot.model.User.Gender;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -64,18 +67,59 @@ public class UserServiceTest {
     }
 
     @Test
-    public void updateUser() throws Exception {
+    public void shouldUpdateUser() throws Exception {
+        UUID adrianUid = UUID.randomUUID();
+        User adrian = new User(adrianUid, "Adrián", "Domínguez", Gender.MALE, 30, "adrian@adro.dev");
 
+        given(fakeDataDao.selectUserById(adrianUid)).willReturn(Optional.of(adrian));
+        given(fakeDataDao.updateUser(adrian)).willReturn(1);
+
+        ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
+
+        int updateRestult = userService.updateUser(adrian);
+
+        verify(fakeDataDao).selectUserById(adrianUid);
+        verify(fakeDataDao).updateUser(captor.capture());
+
+        User user = captor.getValue(); 
+        
+        assertUsersFields(user);
+        assertEquals(updateRestult, 1);
     }
 
     @Test 
-    public void removeUser() throws Exception {
+    public void shouldRemoveUser() throws Exception {
+        UUID adrianUid = UUID.randomUUID();
+        User adrian = new User(adrianUid, "Adrián", "Domínguez", Gender.MALE, 30, "adrian@adro.dev");
 
+        given(fakeDataDao.selectUserById(adrianUid)).willReturn(Optional.of(adrian));
+        given(fakeDataDao.deleteUserByUserUid(adrianUid)).willReturn(1);
+
+        int deleteRestult = userService.removeUser(adrianUid);
+
+        verify(fakeDataDao).selectUserById(adrianUid);
+        verify(fakeDataDao).deleteUserByUserUid(adrianUid);
+        
+        assertEquals(deleteRestult, 1);
     }
 
     @Test
-    public void insertUser() throws Exception {
+    public void shouldInsertUser() throws Exception {
+        UUID adrianUid = UUID.randomUUID();
+        User adrian = new User(adrianUid, "Adrián", "Domínguez", Gender.MALE, 30, "adrian@adro.dev");
+        
+        given(fakeDataDao.insertUser(adrian)).willReturn(1);
 
+        ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
+
+        int insertResult = userService.insertUser(adrian); 
+
+        verify(fakeDataDao).insertUser(captor.capture());
+
+        User user = captor.getValue();
+
+        assertUsersFields(user);
+        assertEquals(1, insertResult);
     }
 
     private void assertUsersFields(User user) {
