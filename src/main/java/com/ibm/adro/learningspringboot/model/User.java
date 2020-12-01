@@ -4,16 +4,18 @@ import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class User {
-    private final UUID userUid;
-    private final String firstName;
-    private final String lastName;
-    private final Gender gender;
-    private final Integer age;
-    private final String email;
+    private UUID userUid;
+    private String firstName;
+    private String lastName;
+    private Gender gender;
+    private Integer age;
+    private String email;
 
     public enum Gender {
         MALE, FEMALE
