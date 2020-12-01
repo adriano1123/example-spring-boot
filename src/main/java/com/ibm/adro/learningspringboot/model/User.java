@@ -2,6 +2,11 @@ package com.ibm.adro.learningspringboot.model;
 
 import java.util.UUID;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
 public class User {
     private final UUID userUid;
     private final String firstName;
@@ -9,45 +14,6 @@ public class User {
     private final Gender gender;
     private final Integer age;
     private final String email;
-
-    public User(UUID userUid, String firstName, String lastName, Gender gender, Integer age, String email) {
-        this.userUid = userUid;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = gender;
-        this.age = age;
-        this.email = email;
-    }
-
-    public UUID getUserUid() {
-        return userUid;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    @Override
-    public String toString() {
-        return "User [age=" + age + ", email=" + email + ", firstName=" + firstName + ", gender=" + gender
-                + ", lastName=" + lastName + ", userUid=" + userUid + "]";
-    }
 
     public enum Gender {
         MALE, FEMALE
