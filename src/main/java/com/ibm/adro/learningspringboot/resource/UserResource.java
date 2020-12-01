@@ -1,16 +1,21 @@
 package com.ibm.adro.learningspringboot.resource;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.ibm.adro.learningspringboot.model.User;
 import com.ibm.adro.learningspringboot.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping(
+    path = "/api/v1/users"
+)
 public class UserResource {
     
     private UserService userService;
@@ -20,9 +25,19 @@ public class UserResource {
         this.userService = userService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(
+        method = RequestMethod.GET
+    )
     public List<User> fetchUsers() {
         return userService.getAllUsers(); 
     } 
+
+    @RequestMapping(
+        method = RequestMethod.GET, 
+        path = "{userUid}"
+    )
+    public User fetchUser(@PathVariable("userUid") UUID userUid) {
+        return userService.getUser(userUid).get();
+    }
 
 }
