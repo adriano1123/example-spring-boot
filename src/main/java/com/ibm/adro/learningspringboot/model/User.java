@@ -2,20 +2,32 @@ package com.ibm.adro.learningspringboot.model;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class User {
-    private UUID userUid;
-    private String firstName;
-    private String lastName;
-    private Gender gender;
-    private Integer age;
-    private String email;
+    
+    @JsonProperty("userUid")
+    private final UUID userUid;
+
+    @JsonProperty("firstName")
+    private final String firstName;
+
+    @JsonProperty("lastName")
+    private final String lastName;
+
+    @JsonProperty("gender")
+    private final Gender gender;
+
+    @JsonProperty("age")
+    private final Integer age;
+
+    @JsonProperty("email")
+    private final String email;
 
     public enum Gender {
         MALE, FEMALE

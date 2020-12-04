@@ -1,8 +1,10 @@
 package com.ibm.adro.learningspringboot.resource;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.ibm.adro.learningspringboot.model.User;
@@ -34,14 +36,16 @@ public class UserResource {
     }
 
     @RequestMapping(
-        method = RequestMethod.GET
+        method = RequestMethod.GET, 
+        produces = MediaType.APPLICATION_JSON
     )
-    public List<User> fetchUsers() {
-        return userService.getAllUsers(); 
+    public List<User> fetchUsers(@QueryParam("gender") String gender) {
+        return userService.getAllUsers(Optional.ofNullable(gender)); 
     } 
 
     @RequestMapping(
-        method = RequestMethod.GET, 
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON,  
         path = "{userUid}"
     )
     public ResponseEntity<?> fetchUser(@PathVariable("userUid") UUID userUid) {
@@ -52,7 +56,8 @@ public class UserResource {
 
     @RequestMapping(
         method = RequestMethod.POST, 
-        consumes = MediaType.APPLICATION_JSON
+        consumes = MediaType.APPLICATION_JSON, 
+        produces = MediaType.APPLICATION_JSON
     )
     public ResponseEntity<Integer> insertNewUser(@RequestBody User user) {
         int result = userService.insertUser(user); 
@@ -66,7 +71,8 @@ public class UserResource {
 
     @RequestMapping(
         method = RequestMethod.PUT, 
-        consumes = MediaType.APPLICATION_JSON
+        consumes = MediaType.APPLICATION_JSON,
+        produces = MediaType.APPLICATION_JSON
     )
     public ResponseEntity<Integer> updateUser(@RequestBody User user) {
         int result = userService.updateUser(user); 
@@ -80,6 +86,7 @@ public class UserResource {
 
     @RequestMapping(
         method = RequestMethod.DELETE,
+        produces = MediaType.APPLICATION_JSON,
         path = "{userUid}"
     )
     public ResponseEntity<Integer> deleteUser(@PathVariable UUID userUid) {
